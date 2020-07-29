@@ -1,0 +1,28 @@
+@model CallBoard.Models.PostModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="PostDetails">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <h3 class="mb-2">
+                        @Html.DisplayFor(model => model.Title)
+                    </h3>
+                    <p class="card-text mb-auto">
+                        @Html.DisplayFor(model => model.Description)
+                    </p>
+                    <p class="card-text mb-auto font-weight-bold">
+                        $ @Html.DisplayFor(model => model.Price)
+                    </p>
+                </div>
+                <div class="post-image col-auto d-none d-lg-block">
+                    <img class="img-fluid w-100" src=@Model.ImageUrl alt=@Model.Title />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

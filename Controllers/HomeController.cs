@@ -7,25 +7,37 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CallBoard.Models;
 
+using CallBoard.Repository;
+
 namespace CallBoard.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPostRepository _postRepo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepo)
         {
             _logger = logger;
+            _postRepo = postRepo ??
+                throw new ArgumentNullException(nameof(postRepo));
         }
 
         public IActionResult Index()
         {
-            return View();
+            var posts = _postRepo.GetPosts();
+            return View(posts);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Details(Guid id)
         {
-            return View();
+            var post = _postRepo.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

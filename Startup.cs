@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using CallBoard.DbContexts;
+using CallBoard.Repository;
 
 namespace CallBoard
 {
@@ -28,6 +29,8 @@ namespace CallBoard
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddDbContext<CallBoardContext>(options => 
             {

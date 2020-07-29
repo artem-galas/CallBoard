@@ -1,8 +1,30 @@
-﻿@{
+﻿@model IEnumerable<CallBoard.Models.PostModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="CallBoard">
+    <div class="row mb-2">
+        @foreach (var item in Model) {
+            <div class="col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <h3 class="mb-2">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </h3>
+                        <p class="card-text mb-auto">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </p>
+                        <p class="card-text mb-auto font-weight-bold">
+                            $ @Html.DisplayFor(modelItem => item.Price)
+                        </p>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </div>
+                    <div class="post-image col-auto d-none d-lg-block">
+                        <img class="img-fluid w-100" src=@item.ImageUrl alt=@item.Title />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
