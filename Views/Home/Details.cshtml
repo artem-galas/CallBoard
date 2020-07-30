@@ -1,4 +1,8 @@
 @model CallBoard.Models.PostModel
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = Model.Title;
@@ -7,6 +11,12 @@
 <section class="PostDetails">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div class="mb-3 d-flex justify-content-between">
+                <a asp-action="Index"><- Back to List</a>
+                @if (Model.AuthorId == Guid.Parse(UserManager.GetUserId(User))) {
+                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                }
+            </div>
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static">
                     <h3 class="mb-2">

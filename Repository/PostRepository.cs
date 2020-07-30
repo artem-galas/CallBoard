@@ -54,5 +54,15 @@ namespace CallBoard.Repository
 
             return post;
         }
+
+        public PostModel UpdatePost(Guid postId, PostModel postData)
+        {
+            var post = _context.Posts.FirstOrDefault(p => p.Id == postId);
+            _context.Posts.Update(postData);
+            _context.SaveChanges();
+
+            return post;
+        }
+
     }
 }

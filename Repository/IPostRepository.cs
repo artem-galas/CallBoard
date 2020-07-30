@@ -11,5 +11,6 @@ namespace CallBoard
         void AddPost(Guid autorId, PostModel post);
         PostModel GetPost(Guid postId);
         PostModel CreatePost(PostModel post);
+        PostModel UpdatePost(Guid postId, PostModel postData);
     }
 }
