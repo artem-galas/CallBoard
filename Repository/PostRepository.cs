@@ -46,5 +46,13 @@ namespace CallBoard.Repository
 
             return _context.Posts.Find(postId);
         }
+
+        public PostModel CreatePost(PostModel post)
+        {
+            _context.Posts.Add(post);
+            _context.SaveChanges();
+
+            return post;
+        }
     }
 }

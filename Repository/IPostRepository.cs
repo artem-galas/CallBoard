@@ -10,5 +10,6 @@ namespace CallBoard
         IEnumerable<PostModel> GetPosts();
         void AddPost(Guid autorId, PostModel post);
         PostModel GetPost(Guid postId);
+        PostModel CreatePost(PostModel post);
     }
 }

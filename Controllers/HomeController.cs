@@ -5,7 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using CallBoard.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 using CallBoard.Repository;
 
@@ -15,10 +18,12 @@ namespace CallBoard.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPostRepository _postRepo;
+        private UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, IPostRepository postRepo)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepo, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
             _postRepo = postRepo ??
                 throw new ArgumentNullException(nameof(postRepo));
         }
@@ -37,6 +42,34 @@ namespace CallBoard.Controllers
                 return NotFound();
             }
 
+            return View(post);
+        }
+
+        [Authorize]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("Title,Description,Price,ImageUrl")] PostModel post)
+        {
+            try {
+                if (ModelState.IsValid)
+                {
+                    var userId = _userManager.GetUserId(User);
+                    post.AuthorId = Guid.Parse(userId);
+                    _postRepo.CreatePost(post);
+                    return RedirectToAction(nameof(Index));
+                }
+            } catch (DbUpdateException /* ex */)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
             return View(post);
         }
 
